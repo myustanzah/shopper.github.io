@@ -1,0 +1,63 @@
+.container {
+  background-color: orange;
+  width: 80%;
+  margin: auto;
+  padding-left: 20px;
+}
+
+.navbar {
+  font-size: 60px;
+  font-family: "Proza Libre", sans-serif;
+}
+
+.subtitle {
+  font-size: 30px;
+  margin-right: 20px;
+  font-family: "Proza Libre", sans-serif;
+}
+
+.subtitle input {
+  width: 200px;
+  height: 30px;
+  border-radius: 10px;
+  padding-left: 10px;
+  border-style: none;
+}
+
+.subtitle button {
+  width: 100px;
+  height: 30px;
+  color: white;
+  border-radius: 10px;
+  background-color: red;
+}
+
+.daftar-product {
+  background-color: #f8e5e5;
+  text-align: center;
+  width: 250px;
+  height: 410px;
+  padding: 10px;
+  margin: 10px 20px 10px 20px;
+  display: inline-block;
+}
+
+.daftar-product img {
+  width: 230px;
+}
+
+.daftar-product #price {
+  font-size: 20px;
+}
+
+.daftar-product h4 {
+  margin: 0%;
+}
+
+.daftar-product #tombol-add {
+  width: 100px;
+  height: 25px;
+  background-color: red;
+  border-radius: 10px;
+  color: white;
+}
