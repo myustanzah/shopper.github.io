@@ -18,6 +18,7 @@ nav {
 .card {
     width: 18rem;
     background-color: #fcf0f0 !important;
+    border-radius: 3% !important;
 }
 
 .product-image {
