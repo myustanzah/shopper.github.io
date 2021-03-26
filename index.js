@@ -48,7 +48,7 @@ function search() {
     if (output.length === 0) {
         alert('Product tidak ada')
     } else {
-        render(output)
+        add(render(output))
     }
 }
 // search()
@@ -57,7 +57,7 @@ function render(data) {
     const list = document.getElementById("list")
     list.innerHTML = ""
     for (let i = 0; i < data.length; i++) {
-
+        let harga = moneyFormatter(data[i].harga)
         const product = document.createElement("div")
         product.className = "col product-justify"
         product.innerHTML = `<div class="card">
@@ -65,9 +65,9 @@ function render(data) {
         <img src="${data[i].img}" class="card-img-top product-image" alt="image">
         <div class="card-body product-info">
         <h5 class="card-title">${data[i].brand}</h5>
-        <p class="card-text">${'Rp ' + data[i].harga}</p>
+        <p class="card-text">${harga}</p>
         <div class="text-center span" id="buttonTambah">
-        <button type="button" class="btn btn-block btn-add-product">Add</button>
+        <button type="button" class="btn btn-block btn-add-product" id="button${i}">Add</button>
         </div>
         </div>
         </div>
@@ -77,7 +77,22 @@ function render(data) {
 }
 render(dataBase)
 
+
+
+// function add() {
+//     // let tambah = document.getElementById("")
+//     let buttonAdd = document.getElementsByClassName("btn btn-block btn-add-product")
+//     buttonAdd.addEventListener('click', function () {
+//         console.log('masuk');
+//     })
+// }
+// add()
+
 function createDeleteButton() {
+    // let pesanan = search(data)
+    // for (let i = 0; i < dataBase.length; i++) {
+    //     const product = data[i]
+
     const pesanan = document.getElementById("data-barang")
     const del = document.createElement('button')
     del.setAttribute("class", "btn btn-gray")
@@ -86,8 +101,83 @@ function createDeleteButton() {
         del.parentElement.parentElement.remove()
     })
     pesanan.children[0].children[4].appendChild(del)
-
+    // }
 }
 createDeleteButton()
 
 
+function minusButton() {
+    const pesanan = document.getElementById("data-barang")
+    const hargaBarang = 50000 //diganti harga dari database yang masuk entar
+    let quantity = pesanan.children[0].children[2].children[1]
+    quantity.innerHTML = Number(quantity.innerHTML) - 1;
+    let harga = pesanan.children[0].children[3];
+    harga.innerHTML = Number(harga.innerHTML) - hargaBarang;
+    if (Number(quantity.innerHTML) === 0) {
+        pesanan.remove()
+    }
+
+}
+
+function plusButton() {
+    const pesanan = document.getElementById("data-barang")
+    const hargaBarang = 50000 //diganti harga dari database yang masuk entar
+    let quantity = pesanan.children[0].children[2].children[1]
+    quantity.innerHTML = Number(quantity.innerHTML) + 1;
+    let harga = pesanan.children[0].children[3];
+    harga.innerHTML = Number(harga.innerHTML) + hargaBarang;
+}
+
+
+function moneyFormatter(money) {//number
+    // write your code
+    let numString = `${money}`
+    let reversed = ''
+    for (let i = numString.length - 1; i >= 0; i--) {
+        reversed += numString[i]
+    }
+
+    let reversedByPoint = ''
+    let k = 2;
+    for (let j = 0; j < reversed.length; j++) {
+        reversedByPoint += reversed[j]
+        if (j === k && reversed[j + 1]) {
+            reversedByPoint += '.';
+            k += 3;
+        }
+    }
+
+    let output = ''
+    for (let l = reversedByPoint.length - 1; l >= 0; l--) {
+        output += reversedByPoint[l];
+    }
+
+    return output
+}//string
+
+
+function add() {
+    for (let i = 0; i < dataBase.length; i++) {
+        const displayBarang = document.getElementById("data-barang")
+        const creatRow = document.createElement("tr")
+        creatRow.innerHTML = `
+        <th scope="row">1</th>
+        <td>${dataBase[i].brand}</td>
+        <td>
+            <button onclick="minusButton()" class="btn btn-gray" type="button">-</button>
+            <span class="px-2">0</span>
+            <button onclick="plusButton()" class="btn btn-gray" type="button">+</button>
+        </td>
+        <td>${dataBase[i].harga}</td>
+        <td></td>
+        <!-- <button class="btn btn-gray" type="button">Hapus</button> -->
+        `
+        const tombolAdd = document.getElementById(`button${i}`)
+        console.log(displayBarang);
+        tombolAdd.addEventListener('click', function () {
+            displayBarang.appendChild(creatRow)
+            // createDeleteButton()
+        })
+    }
+}
+add()
