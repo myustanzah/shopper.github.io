@@ -22,22 +22,22 @@ function search() {
         let brand = dataBase[i].brand.toLowerCase()
         let tmp = ""
 
-        // let index = brand.search(input) // menggunakan build in function
+        let index = brand.search(input) // menggunakan build in function
         // console.log(index);
-        // if (index !== -1) {
-        //     output.push(dataBase[i])
-        // }
-
-        for (let j = 0; j <= brand.length; j++) {
-            if (brand[j] === ' ' || !brand[j]) {
-                if (tmp.toLowerCase() === input.toLowerCase()) {
-                    output.push(dataBase[i])
-                }
-                tmp = ''
-            } else {
-                tmp += brand[j]
-            }
+        if (index !== -1) {
+            output.push(dataBase[i])
         }
+
+        // for (let j = 0; j <= brand.length; j++) {
+        //     if (brand[j] === ' ' || !brand[j]) {
+        //         if (tmp.toLowerCase() === input.toLowerCase()) {
+        //             output.push(dataBase[i])
+        //         }
+        //         tmp = ''
+        //     } else {
+        //         tmp += brand[j]
+        //     }
+        // }
     }
     // console.log(output);
     if (output.length === 0) {
@@ -55,14 +55,14 @@ function render(data) {
         let harga = moneyFormatter(data[i].harga)
         const product = document.createElement("div")
         product.className = "col product-justify"
-        product.innerHTML = `<div class="card">
-        <span class = "product-stock">Stok : ${data[i].stock}</span>
+        product.innerHTML = `<div class="card" id="${data[i].brand}">
+        <span class = "product-stock" id="${data[i].stock}">Stok : ${data[i].stock}</span>
         <img src="${data[i].img}" class="card-img-top product-image" alt="image">
         <div class="card-body product-info">
-        <h5 class="card-title">${data[i].brand}</h5>
-        <p class="card-text">Rp${harga},-</p>
+        <h5 class="card-title" >${data[i].brand}</h5>
+        <p class="card-text" id="${data[i].harga}">Rp${harga},-</p>
         <div class="text-center span">
-        <button type="button" class="btn btn-block btn-add-product">Add</button>
+        <button type="button" class="btn btn-block btn-add-product" id="button ${i}">Add</button>
         </div>
         </div>
         </div>
@@ -73,15 +73,66 @@ function render(data) {
 render(dataBase)
 
 
-
-// function add() {
-//     // let tambah = document.getElementById("")
-//     let buttonAdd = document.getElementsByClassName("btn btn-block btn-add-product")
-//     buttonAdd.addEventListener('click', function () {
-//         console.log('masuk');
+// function addToCart(str) {
+//     console.log(str);
+//     let namaBarang = str.children[2].children[0].innerHTML
+    
+//     const pesanan = document.getElementById("data-barang")
+//     const barang = document.createElement('span')
+//     barang.setAttribute("class", "btn btn-gray")
+//     barang.innerHTML = namaBarang
+//     barang.addEventListener('click', function () {
+//         barang.parentElement.parentElement.remove()
 //     })
+//     pesanan.children[0].children[4].appendChild(barang)
+
 // }
-// add()
+
+function add() {
+    // let tambah = document.getElementById("")
+    let addButtons = document.getElementsByClassName("btn btn-block btn-add-product")
+    for (let i = 0; i < addButtons.length; i++){
+        const addButton = addButtons[i]
+        let clickCounter = 1
+        let banyakBarang = 1
+        addButton.addEventListener('click', function () {
+            let namaBarang = addButton.parentElement.parentElement.children[0].innerHTML
+            let hargaBarang = addButton.parentElement.parentElement.children[1].getAttribute("id")
+            let stokBarang = addButton.parentElement.parentElement.previousElementSibling.previousElementSibling.getAttribute("id")
+            const  bodyTable= document.getElementById("data-barang")
+            const barisBaru = document.createElement('tr')
+            const newCellNo = document.createElement('td')
+            const newCellBrand = document.createElement('td')
+            const newCellJumlah = document.createElement('td')
+            const newCellHarga = document.createElement('td')
+            newCellJumlah.setAttribute('value', `${stokBarang}`)
+            newCellHarga.setAttribute('value', `${hargaBarang}`)
+            newCellNo.innerHTML = bodyTable.children.length + 1
+            newCellBrand.innerHTML = namaBarang
+            newCellJumlah.innerHTML = `
+            <button onclick="minusButton(this.id)" class="btn btn-gray" type="button" id="minus_${(bodyTable.children.length + 1)}">-</button>
+            <span class="px-2" id="">${banyakBarang}</span>
+            <button onclick="plusButton(this.id)" class="btn btn-gray" type="button" id="plus_${(bodyTable.children.length + 1)}">+</button>`
+            newCellHarga.innerHTML = `Rp${moneyFormatter(hargaBarang)}`
+            barisBaru.appendChild(newCellNo)
+            barisBaru.appendChild(newCellBrand)
+            barisBaru.appendChild(newCellJumlah)
+            barisBaru.appendChild(newCellHarga)
+            barisBaru.setAttribute("id", `row_${(bodyTable.children.length + 1)}`)
+            bodyTable.appendChild(barisBaru)
+            // rowItem.insertCell(3).innerHTML = ;
+            banyakBarang += 1
+            addButton.remove()
+        })
+    }
+}
+add()
+
+// function ambilNode(button_id){
+//     console.log(button_id);
+//     button_id.previousElementSibling
+
+// }
 
 function createDeleteButton() {
     // let pesanan = search(data)
@@ -98,29 +149,45 @@ function createDeleteButton() {
     pesanan.children[0].children[4].appendChild(del)
     // }
 }
-createDeleteButton()
+// createDeleteButton()
 
 
-function minusButton() {
-    const pesanan = document.getElementById("data-barang")
-    const hargaBarang = 50000 //diganti harga dari database yang masuk entar
-    let quantity = pesanan.children[0].children[2].children[1]
-    quantity.innerHTML =  Number(quantity.innerHTML) - 1;
-    let harga = pesanan.children[0].children[3];
-    harga.innerHTML = Number(harga.innerHTML) - hargaBarang;
-    if(Number(quantity.innerHTML) === 0){
-        pesanan.remove()
+function minusButton(element) {
+    // const pesanan = document.getElementById("data-barang")
+    // const hargaBarang = 50000 //diganti harga dari database yang masuk entar
+    // let quantity = pesanan.children[0].children[2].children[1]
+    // quantity.innerHTML =  Number(quantity.innerHTML) - 1;
+    // let harga = pesanan.children[0].children[3];
+    // harga.innerHTML = Number(harga.innerHTML) - hargaBarang;
+    const tombolMinus = document.getElementById(element)
+    let quantity = Number(tombolMinus.nextElementSibling.innerHTML)
+    const hargaSatuan = Number(tombolMinus.parentElement.nextElementSibling.getAttribute('value'))
+    quantity--
+    if(quantity === 0){
+        tombolMinus.parentElement.parentElement.remove()
     }
+    tombolMinus.nextElementSibling.innerHTML = quantity;
+    tombolMinus.parentElement.nextElementSibling.innerHTML = `Rp${moneyFormatter( hargaSatuan * quantity)}`
     
 }
 
-function plusButton() {
-    const pesanan = document.getElementById("data-barang")
-    const hargaBarang = 50000 //diganti harga dari database yang masuk entar
-    let quantity = pesanan.children[0].children[2].children[1]
-    quantity.innerHTML =  Number(quantity.innerHTML) + 1;
-    let harga = pesanan.children[0].children[3]; 
-    harga.innerHTML = Number(harga.innerHTML) + hargaBarang;   
+function plusButton(element) {
+    // console.log(element);
+    const tombolPlus = document.getElementById(element)
+    let quantity = Number(tombolPlus.previousElementSibling.innerHTML)
+    const hargaSatuan = Number(tombolPlus.parentElement.nextElementSibling.getAttribute('value'))
+    quantity++
+    tombolPlus.previousElementSibling.innerHTML = quantity;
+    tombolPlus.parentElement.nextElementSibling.innerHTML = `Rp${moneyFormatter( hargaSatuan * quantity)}`
+    // tombolPlus.parentElement.nextElementSibling.getA
+    // const pesanan = document.getElementById("data-barang")
+    // const baris = pesanan.children[pesanan.children.length - 1].children[0].innerHTML
+    // console.log(baris);
+    // const hargaBarang = 50000 //diganti harga dari database yang masuk entar
+    // let quantity = pesanan.children[0].children[2].children[1]
+    // quantity.innerHTML =  Number(quantity.innerHTML) + 1;
+    // let harga = pesanan.children[0].children[3]; 
+    // harga.innerHTML = Number(harga.innerHTML) + hargaBarang;   
 }
 
 
@@ -149,3 +216,8 @@ function moneyFormatter(money) {//number
   
     return output
   }//string
+
+  function newRow(tabBody){
+    const barisBaru = document.createElement('tr')
+    tabBody.appendChild(barisBaru)
+  }
