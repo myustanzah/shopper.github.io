@@ -206,16 +206,16 @@ function moneyFormatter(money) {//number
     return output
 }//string
 
-function newRow(tabBody) {
-    const barisBaru = document.createElement('tr')
-    tabBody.appendChild(barisBaru)
-}
 
 function buttonCheckout() {
     const buttonCheck = document.getElementById("checkout")
+    const bodyTable = document.getElementById("data-barang")
     buttonCheck.addEventListener('click', function () {
-        alert("PESANAN ANDA SUDAH DIKAMAS. TERIMA KASIH SUDAH BERBELANJA")
+        if (bodyTable.children.length < 1) {
+            alert("ANDA BELUM MENAMBAHKAN BARANG KE DAFTAR BELANJA")
+        } else {
+            alert("PESANAN ANDA SUDAH DIKEMAS. TERIMA KASIH SUDAH BERBELANJA")
+        }
     })
 }
 buttonCheckout()
-
