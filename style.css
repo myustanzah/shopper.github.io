@@ -18,6 +18,7 @@ nav {
 .card {
   width: 18rem;
   background-color: #fcf0f0 !important;
+  margin-bottom: 20px;
 }
 
 .product-image {
@@ -26,6 +27,7 @@ nav {
 
 .product-info {
   padding: 0 16px 16px 16px !important;
+  text-align: center;
 }
 
 .btn-add-product {

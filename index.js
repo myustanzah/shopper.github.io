@@ -2,15 +2,20 @@ const dataBase = [
     { harga: 1000000, img: `https://s1.bukalapak.com/img/18917791912/w-250/2020-05-15T13%3A41%3A11%2B07%3A00.jpeg.webp`, brand: 'Samsung', stock: 200 },
     { harga: 2000000, img: `https://s1.bukalapak.com/img/63536959851/s-330-330/data.png`, brand: 'Samsung A10', stock: 2 },
     { harga: 3000000, img: `https://s0.bukalapak.com/img/57289478641/s-330-330/data.png`, brand: 'Samsung J8', stock: 2010 },
-    { harga: 4000000, img: `https://s2.bukalapak.com/img/29815964201/s-330-330/data.png`, brand: 'Samsung gemini', stock: 101 },
+    { harga: 4000000, img: `https://s2.bukalapak.com/img/29815964201/s-330-330/data.png`, brand: 'Samsung A50', stock: 101 },
     { harga: 5000000, img: `https://s1.bukalapak.com/img/16616418942/s-330-330/data.jpeg`, brand: 'Samsung A4', stock: 211 },
     { harga: 6000000, img: `https://s0.bukalapak.com/img/58210598131/s-330-330/2019_08_16T18_55_45_07_00.jpg`, brand: 'Xiomi j3', stock: 201 },
 ]
 
-let buttonSearce = document.getElementById("button-cari")
+const buttonSearce = document.getElementById("button-cari")
+// const pertambahan = document.getElementsById("buttonTambah")
+// const tambah = document.createElement("button")
+// tambah.setAttribute("class", "btn btn-block btn-add-product")
+// tambah.innerHTML = "Add"
 buttonSearce.addEventListener('click', function (event) {
     event.preventDefault()
     search()
+    // pertambahan.children[0].appendChild(tambah)
 })
 
 function search() {
@@ -60,8 +65,8 @@ function render(data) {
         <img src="${data[i].img}" class="card-img-top product-image" alt="image">
         <div class="card-body product-info">
         <h5 class="card-title">${data[i].brand}</h5>
-        <p class="card-text">${data[i].harga}</p>
-        <div class="text-center span">
+        <p class="card-text">${'Rp ' + data[i].harga}</p>
+        <div class="text-center span" id="buttonTambah">
         <button type="button" class="btn btn-block btn-add-product">Add</button>
         </div>
         </div>
@@ -72,22 +77,7 @@ function render(data) {
 }
 render(dataBase)
 
-
-
-// function add() {
-//     // let tambah = document.getElementById("")
-//     let buttonAdd = document.getElementsByClassName("btn btn-block btn-add-product")
-//     buttonAdd.addEventListener('click', function () {
-//         console.log('masuk');
-//     })
-// }
-// add()
-
 function createDeleteButton() {
-    // let pesanan = search(data)
-    // for (let i = 0; i < data.length; i++) {
-    //     const product = data[i]
-
     const pesanan = document.getElementById("data-barang")
     const del = document.createElement('button')
     del.setAttribute("class", "btn btn-gray")
@@ -96,13 +86,8 @@ function createDeleteButton() {
         del.parentElement.parentElement.remove()
     })
     pesanan.children[0].children[4].appendChild(del)
-    // }
+
 }
 createDeleteButton()
 
-            // `<img src="${data[i].img}" alt="Barang">
-            // <h4>"${data[i].brand}"</h4>
-            // <span id='price'>Rp ${data[i].harga}</span><br>
-            // <button id="tombol-add">Add</button>
-            // `
 
