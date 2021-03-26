@@ -161,7 +161,7 @@ function add() {
         const displayBarang = document.getElementById("data-barang")
         const creatRow = document.createElement("tr")
         creatRow.innerHTML = `
-        <th scope="row">1</th>
+        <th scope="row">${0 + i}</th>
         <td>${dataBase[i].brand}</td>
         <td>
             <button onclick="minusButton()" class="btn btn-gray" type="button">-</button>
